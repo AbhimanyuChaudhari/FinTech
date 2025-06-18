@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 
-export type SectorMap = Record<string, string[]>;
+export interface TickerMetadata {
+  ticker: string;
+  name: string;
+  exchange: string;
+}
+
+export type SectorMap = Record<string, TickerMetadata[]>;
 
 export const useStockDashboard = () => {
   const [sectorMap, setSectorMap] = useState<SectorMap>({});
@@ -8,17 +14,20 @@ export const useStockDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/sector_tickers.json")
-      .then((res) => res.json())
-      .then((data: SectorMap) => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/sectors");
+        const data: SectorMap = await res.json();
         setSectorMap(data);
         setSelectedSector(Object.keys(data)[0] || "");
+      } catch (err) {
+        console.error("Failed to load sector data:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load sector tickers:", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   return {

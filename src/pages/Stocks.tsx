@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useStockDashboard } from "../hooks/stockDashboard";
+import { useNavigate } from "react-router-dom";
+import { FaChartLine } from "react-icons/fa";
 
 const Stocks = () => {
   const {
@@ -10,33 +12,34 @@ const Stocks = () => {
   } = useStockDashboard();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
-  if (loading) {
-    return <div style={{ padding: "2rem", color: "#fff" }}>Loading sectors...</div>;
-  }
+  if (loading)
+    return <div style={{ padding: "2rem", color: "#fff" }}>Loading...</div>;
 
   const tickers = sectorMap[selectedSector] || [];
-
   const filteredTickers = tickers.filter((t) =>
-    t.toLowerCase().includes(searchQuery.toLowerCase())
+    t.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    t.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div
-      style={{
-        backgroundColor: "#0f172a",
-        color: "#f9fafb",
-        padding: "2rem",
-        fontFamily: "Inter, system-ui, sans-serif",
-        minHeight: "100vh",
-      }}
-    >
-      <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "2rem" }}>
-        📊 Stocks by Sector
-      </h1>
+    <div style={{ background: "#0f172a", color: "#f9fafb", padding: "2rem", minHeight: "100vh" }}>
+      <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "1rem" }}>📊 Stocks by Sector</h1>
+
+      {/* Debug button */}
+      <button
+        onClick={() => {
+          console.log("✅ TEST BUTTON CLICKED");
+          navigate("/stock/AAPL");
+        }}
+        style={{ marginBottom: "1rem", padding: "0.5rem", background: "#2563eb", color: "#fff" }}
+      >
+        Force Load AAPL
+      </button>
 
       {/* Sector Tabs */}
-      <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
         {Object.keys(sectorMap).map((sector) => (
           <button
             key={sector}
@@ -48,12 +51,10 @@ const Stocks = () => {
               padding: "8px 16px",
               borderRadius: "999px",
               backgroundColor: selectedSector === sector ? "#2563eb" : "#1e293b",
-              color: selectedSector === sector ? "#ffffff" : "#cbd5e1",
+              color: selectedSector === sector ? "#fff" : "#cbd5e1",
               border: "1px solid #334155",
-              fontWeight: 600,
-              fontSize: "0.9rem",
               cursor: "pointer",
-              transition: "background-color 0.2s ease",
+              transition: "background-color 0.2s ease-in-out",
             }}
           >
             {sector}
@@ -61,102 +62,75 @@ const Stocks = () => {
         ))}
       </div>
 
-      {/* Search within selected sector */}
+      {/* Search Input */}
       <input
         type="text"
-        placeholder="Search stock in this sector..."
+        placeholder="Search stock..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         style={{
-          padding: "8px 12px",
-          borderRadius: "6px",
-          backgroundColor: "#1e293b",
-          border: "1px solid #334155",
+          padding: "10px 14px",
+          background: "#1e293b",
           color: "#f9fafb",
+          border: "1px solid #334155",
+          borderRadius: "6px",
+          marginBottom: "1.5rem",
           width: "100%",
           maxWidth: "400px",
-          marginBottom: "1rem",
-          fontSize: "0.85rem",
+          fontSize: "1rem",
         }}
       />
 
-      {/* Scrollable Ticker List */}
-      <div
-        style={{
-          maxHeight: "520px",
-          overflowY: "auto",
-          borderRadius: "8px",
-          border: "1px solid #334155",
-          paddingRight: "6px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-        }}
-      >
-        {filteredTickers.map((ticker, i) => (
+      {/* Stock Cards */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {filteredTickers.map(({ ticker, name, exchange }) => (
           <div
-            key={i}
+            key={ticker}
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 2fr 1fr 1fr auto",
+              display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              backgroundColor: "#1e293b",
-              padding: "0.5rem 1rem",
-              borderRadius: "6px",
-              fontSize: "0.85rem",
-              fontWeight: 500,
-              color: "#e2e8f0",
-              border: "1px solid #2f3e51",
-              transition: "background-color 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#273549";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#1e293b";
+              background: "#1e293b",
+              padding: "1rem 1.25rem",
+              borderRadius: "10px",
+              border: "1px solid #334155",
+              boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
             }}
           >
-            <div>{ticker}</div>
-            <div style={{ color: "#94a3b8" }}>{ticker} Stock</div>
-            <div style={{ color: "#facc15", textAlign: "right" }}>$203.92</div>
-            <div style={{ color: "#4ade80", textAlign: "right" }}>+1.64%</div>
-            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-              <button
-                style={{
-                  padding: "4px 10px",
-                  backgroundColor: "#2563eb",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "4px",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
-              >
-                Watchlist
-              </button>
-              <button
-                style={{
-                  padding: "4px 10px",
-                  backgroundColor: "transparent",
-                  color: "#e0f2fe",
-                  border: "1px solid #475569",
-                  borderRadius: "4px",
-                  fontSize: "0.8rem",
-                  cursor: "pointer",
-                }}
-                onClick={() => alert(`Viewing ${ticker}`)}
-              >
-                Details
-              </button>
+            <div>
+              <strong style={{ fontSize: "1.1rem" }}>{ticker}</strong> - {name}
+              <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>{exchange}</div>
             </div>
+            <button
+              onClick={() => {
+                console.log("Navigating to detail page for:", ticker);
+                navigate(`/stock/${ticker}`);
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "8px 20px",
+                borderRadius: "6px",
+                background: "linear-gradient(to right, #60a5fa, #2563eb)",
+                color: "#fff",
+                border: "none",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 10px rgba(37, 99, 235, 0.4)",
+                transition: "transform 0.15s ease-in-out",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0px)")}
+            >
+              <FaChartLine /> View Details
+            </button>
           </div>
         ))}
 
         {filteredTickers.length === 0 && (
-          <div style={{ padding: "1rem", color: "#94a3b8", fontStyle: "italic" }}>
-            No tickers found.
-          </div>
+          <div style={{ fontStyle: "italic", color: "#94a3b8" }}>No results found.</div>
         )}
       </div>
     </div>

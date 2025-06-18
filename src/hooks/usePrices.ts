@@ -1,8 +1,7 @@
-// src/hooks/usePrice.ts
 import { useEffect, useState } from "react";
 
-export const usePrice = (ticker: string) => {
-  const [price, setPrice] = useState<number | null>(null);
+export const usePrice = (ticker: string, initialPrice: number | null = null) => {
+  const [price, setPrice] = useState<number | null>(initialPrice);
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -18,7 +17,7 @@ export const usePrice = (ticker: string) => {
     };
 
     fetchPrice();
-    const interval = setInterval(fetchPrice, 10000); // refresh every 10 sec
+    const interval = setInterval(fetchPrice, 10000);
 
     return () => clearInterval(interval);
   }, [ticker]);
