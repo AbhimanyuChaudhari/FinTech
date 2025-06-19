@@ -11,6 +11,7 @@ import SentimentAnalysisPage from "./pages/SentimentAnalysisPage";
 import StatisticalAnalysisPage from "./pages/StatisticalAnalysisPage";
 import StrategyTestingPage from "./pages/StrategyTestingPage";
 
+
 const App = () => {
   return (
     <Router>
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/stock/:ticker/technical" element={<TechnicalAnalysisPage />} />
           <Route path="/stock/:ticker/strategy" element={<StrategyTestingPage />} />
           <Route path="/stock/:ticker/statistical" element={<StatisticalAnalysisPage />} />
+          <Route path="/stock/:ticker/technical" element={<TechnicalAnalysisPage />} />
         </Routes>
     </Router>
   );

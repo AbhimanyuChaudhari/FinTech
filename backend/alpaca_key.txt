@@ -1,0 +1,2 @@
+secrete_key - zLiQ4M9zLfVy93QfiichCDIoJmvHf41vNQofP9Ry
+api_key - PKI58EHWK50BNCZR010V
