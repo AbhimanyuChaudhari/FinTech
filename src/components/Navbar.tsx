@@ -12,8 +12,10 @@ const Navbar = () => {
       boxShadow: "0 2px 10px rgba(0,0,0,0.15)"
     }}>
       <div style={{ fontWeight: "bold", fontSize: "1.5rem" }}>AI Fund</div>
-      <div style={{ display: "flex", gap: "1.5rem" }}>
-        {["Home", "Stocks", "About"].map((name, i) => (
+
+      <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+        {/* Main nav links */}
+        {["Home", "Stocks", "About", "Watchlist"].map((name, i) => (
           <Link
             key={i}
             to={name === "Home" ? "/" : `/${name.toLowerCase()}`}
@@ -29,6 +31,8 @@ const Navbar = () => {
             {name}
           </Link>
         ))}
+
+        {/* Auth button */}
         <Link to="/login" style={{
           padding: "6px 16px",
           backgroundColor: "#60a5fa",

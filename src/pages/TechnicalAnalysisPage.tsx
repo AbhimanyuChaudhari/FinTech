@@ -1,9 +1,10 @@
 // src/pages/TechnicalAnalysisPage.tsx
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function TechnicalAnalysisPage() {
   const { ticker } = useParams();
+  const navigate = useNavigate();
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -16,6 +17,7 @@ export default function TechnicalAnalysisPage() {
         if (data.result) setResult(data.result);
         else setResult("⚠️ Failed to load data.");
       })
+      .catch(() => setResult("⚠️ Error fetching technical analysis."))
       .finally(() => setLoading(false));
   }, [ticker]);
 
@@ -34,16 +36,34 @@ export default function TechnicalAnalysisPage() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <pre style={{
-          background: "#1e293b",
-          padding: "1.5rem",
-          borderRadius: "10px",
-          fontSize: "0.95rem",
-          whiteSpace: "pre-wrap",
-          overflowX: "auto",
-        }}>
-          {result}
-        </pre>
+        <>
+          <pre style={{
+            background: "#1e293b",
+            padding: "1.5rem",
+            borderRadius: "10px",
+            fontSize: "0.95rem",
+            whiteSpace: "pre-wrap",
+            overflowX: "auto",
+          }}>
+            {result}
+          </pre>
+
+          <button
+            onClick={() => navigate(`/stock/${ticker}/risk`)}
+            style={{
+              marginTop: "1.5rem",
+              padding: "0.6rem 1.2rem",
+              backgroundColor: "#3b82f6",
+              color: "#fff",
+              fontWeight: "bold",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            🛡️ Run Risk Analysis
+          </button>
+        </>
       )}
     </div>
   );
