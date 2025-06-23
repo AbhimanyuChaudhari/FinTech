@@ -1,20 +1,32 @@
 import { useParams, useNavigate } from "react-router-dom";
-import StockDetail from "../components/StockDetail";
-import { BarChart3, Brain, Microscope, FlaskConical, Sigma } from "lucide-react";
+import { useState } from "react";
+import StockCandleChart from "../components/StockCandleChart"; // ✅ Make sure the path is correct
+import {
+  BarChart3,
+  Brain,
+  Microscope,
+  FlaskConical,
+  Sigma,
+} from "lucide-react";
+
+const intervals = ["1min", "5min", "15min", "30min", "60min", "1d", "1wk", "1mo"];
 
 export default function StockDetailPage() {
   const { ticker } = useParams();
-  const navigate = useNavigate(); // ✅ for programmatic routing
+  const navigate = useNavigate();
+  const [interval, setInterval] = useState("15min");
 
   if (!ticker) {
     return (
-      <div style={{
-        backgroundColor: "#0f172a",
-        color: "#fef2f2",
-        padding: "2rem",
-        textAlign: "center",
-        minHeight: "100vh"
-      }}>
+      <div
+        style={{
+          backgroundColor: "#0f172a",
+          color: "#fef2f2",
+          padding: "2rem",
+          textAlign: "center",
+          minHeight: "100vh",
+        }}
+      >
         <h2 style={{ fontSize: "1.5rem" }}>❌ Invalid Ticker</h2>
         <p>Please select a valid stock from the list.</p>
       </div>
@@ -46,8 +58,7 @@ export default function StockDetailPage() {
           padding: "1rem",
           borderRadius: "12px",
           boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-          zIndex: 1000,
-          height: "fit-content"
+          height: "fit-content",
         }}
       >
         {[
@@ -60,7 +71,7 @@ export default function StockDetailPage() {
           <div
             key={label}
             title={label}
-            onClick={() => navigate(`/stock/${ticker}/${path}`)} // ✅ navigation on click
+            onClick={() => navigate(`/stock/${ticker}/${path}`)}
             style={{
               display: "flex",
               alignItems: "center",
@@ -72,40 +83,45 @@ export default function StockDetailPage() {
               color: "#cbd5e1",
               cursor: "pointer",
               transition: "all 0.2s ease-in-out",
-              position: "relative",
             }}
           >
             {icon}
-            <span
-              style={{
-                position: "absolute",
-                left: "60px",
-                backgroundColor: "#2563eb",
-                color: "#fff",
-                padding: "4px 8px",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                whiteSpace: "nowrap",
-                opacity: 0,
-                transition: "opacity 0.2s ease-in-out",
-              }}
-              className="hover-label"
-            >
-              {label}
-            </span>
           </div>
         ))}
       </div>
 
-      {/* Main Chart View */}
-      <div style={{ flex: 1, overflowX: "auto" }}>
+      {/* Main Chart Area */}
+      <div style={{ flex: 1 }}>
         <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.5rem" }}>
           📈 {ticker} Stock Dashboard
         </h1>
         <p style={{ color: "#94a3b8", marginBottom: "1.5rem" }}>
-          Dive into the technicals, financials, and strategies for <strong>{ticker}</strong>.
+          Explore data for <strong>{ticker}</strong> in various intervals.
         </p>
-        <StockDetail ticker={ticker} onClose={() => window.history.back()} />
+
+        {/* Timeframe Dropdown */}
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="interval" style={{ marginRight: "0.5rem" }}>Select Timeframe:</label>
+          <select
+            id="interval"
+            value={interval}
+            onChange={(e) => setInterval(e.target.value)}
+            style={{
+              backgroundColor: "#1e293b",
+              color: "#f1f5f9",
+              border: "1px solid #334155",
+              padding: "0.25rem 0.5rem",
+              borderRadius: "4px"
+            }}
+          >
+            {intervals.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Chart Component */}
+        <StockCandleChart ticker={ticker} interval={interval} />
       </div>
     </div>
   );
