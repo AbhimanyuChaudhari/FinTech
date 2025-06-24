@@ -13,6 +13,18 @@ from backend.routes import ohlc_route
 from backend.routes import options
 from backend.routes import hedge
 
+# Internal imports
+from routes import sector_map, ohlc_data
+from routes import financial_analysis
+from routes import sentiment_analysis
+from routes import technical_analysis
+from routes import risk_analysis
+from routes import watchlist
+from routes import metadata_search
+from routes import ohlc_route
+from models import Base
+from db import engine
+
 # Initialize tables
 Base.metadata.create_all(bind=engine)
 

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.technical_analysis import TechnicalSignalEvaluator
+from technical_analysis import TechnicalSignalEvaluator
 
 router = APIRouter(prefix="/api/technical", tags=["technical"])
 
