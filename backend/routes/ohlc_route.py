@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Literal
-utils.ohlc_utils import fetch_ohlc_alphavantage
+from utils.ohlc_utils import fetch_ohlc_alphavantage
 
 router = APIRouter()
 
