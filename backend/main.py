@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes import sector_map, ohlc_data  # ✅ Import both
+from routes import sector_map, ohlc_data
 from backend.models import Base
 from backend.db import engine
 from backend.routes import financial_analysis
