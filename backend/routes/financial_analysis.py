@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from backend.finacial_analysis import Financial_Analysis  # adjust import if needed
+finacial_analysis import Financial_Analysis  # adjust import if needed
 
 router = APIRouter(prefix="/api/finance", tags=["finance"])
 

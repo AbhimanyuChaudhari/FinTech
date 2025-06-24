@@ -1,6 +1,6 @@
 # backend/routes/sentiment.py
 from fastapi import APIRouter
-from backend.sentiment_analysis import (
+sentiment_analysis import (
     load_api_key,
     fetch_news_sentiment,
     process_news_feed,

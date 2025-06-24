@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from backend.risk_analysis import RiskAnalysis
+risk_analysis import RiskAnalysis
 
 router = APIRouter(prefix="/api/risk", tags=["Risk Analysis"])
 

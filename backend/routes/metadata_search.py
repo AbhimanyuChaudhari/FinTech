@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query, Depends
 from sqlalchemy.orm import Session
-from backend.models import TickerMetadata
-from backend.db import get_db
+models import TickerMetadata
+db import get_db
 
 router = APIRouter(prefix="/api/search", tags=["Search"])
 

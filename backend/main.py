@@ -1,15 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import sector_map, ohlc_data
-from backend.models import Base
-from backend.db import engine
-from backend.routes import financial_analysis
-from backend.routes import sentiment_analysis  
-from backend.routes import technical_analysis
-from backend.routes import risk_analysis
-from backend.routes import watchlist
-from backend.routes import metadata_search
-from backend.routes import ohlc_route
+models import Base
+db import engine
+routes import financial_analysis
+routes import sentiment_analysis  
+routes import technical_analysis
+routes import risk_analysis
+routes import watchlist
+routes import metadata_search
+routes import ohlc_route
  
 # Initialize tables
 Base.metadata.create_all(bind=engine)
