@@ -1,0 +1,61 @@
+.hedge-panel {
+  background-color: #1e1e2f;
+  color: #f3f4f6;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: "Inter", sans-serif;
+  margin-top: 1.5rem;
+}
+
+.hedge-panel h3 {
+  margin-bottom: 1rem;
+  font-size: 16px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 0.5rem;
+}
+
+.hedge-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hedge-form label {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.hedge-form input,
+.hedge-form select {
+  background: #1e293b;
+  color: white;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.hedge-form button {
+  background-color: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.hedge-output {
+  margin-top: 1rem;
+  background: #10131b;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #475569;
+}
+
+.hedge-output h4 {
+  margin-bottom: 0.5rem;
+  font-size: 15px;
+}

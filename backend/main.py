@@ -10,7 +10,9 @@ from backend.routes import risk_analysis
 from backend.routes import watchlist
 from backend.routes import metadata_search
 from backend.routes import ohlc_route
- 
+from backend.routes import options
+from backend.routes import hedge
+
 # Initialize tables
 Base.metadata.create_all(bind=engine)
 
@@ -36,3 +38,5 @@ app.include_router(risk_analysis.router)
 app.include_router(watchlist.router)
 app.include_router(metadata_search.router)
 app.include_router(ohlc_route.router, prefix="/api")
+app.include_router(options.router, prefix="/api/options", tags=["Options"])
+app.include_router(hedge.router, prefix="/api")
