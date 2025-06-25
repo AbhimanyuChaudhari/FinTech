@@ -3,6 +3,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from backend.db import get_db
+<<<<<<< HEAD
+=======
+
+>>>>>>> a701f2c4e9aaf0053d4265175c1f1947e2267647
 
 
 router = APIRouter()
