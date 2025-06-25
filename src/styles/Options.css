@@ -3,24 +3,51 @@
   position: relative;
 }
 
-/* Adjust container to make space for the builder panel */
 .options-container {
   flex: 1;
   padding: 2rem;
-  padding-right: 370px; /* space for fixed panel */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #fff;
   transition: padding-right 0.3s ease;
 }
 
-.options-header {
+/* Controls bar (search, expiry, toggles) */
+.controls {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
 }
 
+/* Dropdowns and buttons styling */
+.ticker-select {
+  min-width: 240px;
+}
+
+.toggle-builder,
+.hedge-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.toggle-builder {
+  background-color: #0a84ff;
+  color: white;
+}
+
+.hedge-button {
+  background-color: #1e40af;
+  color: white;
+}
+
+.hedge-button:hover {
+  background-color: #3b82f6;
+}
+
+/* Options table */
 .options-table {
   width: 100%;
   border-collapse: collapse;
@@ -50,20 +77,14 @@
 
 .options-table td {
   background-color: #fff;
+  cursor: pointer;
 }
 
 .options-table tbody tr:hover td {
   background-color: #f9f9f9;
 }
 
-.calls-cell {
-  background-color: #e6fff2;
-}
-
-.puts-cell {
-  background-color: #fff9d9;
-}
-
+/* ITM/OTM coloring */
 .itm {
   background-color: #d1fae5 !important; /* Green tint */
 }
@@ -77,6 +98,7 @@
   font-weight: bold;
 }
 
+/* Legend for ITM/OTM */
 .legend {
   margin-bottom: 0.5rem;
   font-size: 0.85rem;
@@ -98,22 +120,12 @@
 .dot.itm {
   background-color: #059669;
 }
+
 .dot.otm {
   background-color: #ca8a04;
 }
 
-/* NEW: Strategy builder toggle button */
-.toggle-builder {
-  margin-left: 1rem;
-  padding: 6px 12px;
-  background-color: #0a84ff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* NEW: Right-side strategy builder panel */
+/* Strategy builder panel */
 .strategy-panel-fixed {
   position: fixed;
   top: 60px;
@@ -126,4 +138,19 @@
   padding: 1rem;
   overflow-y: auto;
   z-index: 100;
+}
+
+/* Hedge assistant panel */
+.hedge-panel-fixed {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  width: 320px;
+  height: calc(100% - 60px);
+  background: #f1f5f9;
+  border-left: 1px solid #cbd5e1;
+  padding: 1rem;
+  overflow-y: auto;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+  z-index: 90;
 }

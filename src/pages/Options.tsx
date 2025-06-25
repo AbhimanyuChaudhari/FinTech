@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AsyncSelect from "react-select/async";
 import type { SingleValue } from "react-select";
 import "../styles/Options.css";
 
-import type { OptionEntry } from "../types/optionTypes";
-import StrategyBuilder, { Leg } from "../components/StrategyBuilder";
+import type { OptionEntry } from "../components/optionStratTemplates";
 import HedgeAssistant from "../components/HedgeAssistant";
+import type { Leg } from "../components/StrategyBuilder";
 
 type SearchOption = {
   label: string;
@@ -21,9 +22,10 @@ const OptionsPage = () => {
   const [selectedExpiry, setSelectedExpiry] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SingleValue<SearchOption>>(null);
-  const [showBuilder, setShowBuilder] = useState(true);
+  const [showHedge, setShowHedge] = useState(false);
 
   const builderRef = useRef<{ addLeg: (leg: Leg) => void }>(null);
+  const navigate = useNavigate();
 
   const fetchOptions = async (ticker: string) => {
     setLoading(true);
@@ -76,11 +78,16 @@ const OptionsPage = () => {
     return "otm";
   };
 
+  const getDynamicPadding = () => {
+    if (showHedge) return "320px";
+    return "0";
+  };
+
   return (
     <div className="options-wrapper">
       <div
         className="options-container"
-        style={{ paddingRight: showBuilder ? "370px" : "0" }}
+        style={{ paddingRight: getDynamicPadding() }}
       >
         <h2>Options Chain</h2>
 
@@ -110,8 +117,12 @@ const OptionsPage = () => {
             ))}
           </select>
 
-          <button onClick={() => setShowBuilder((prev) => !prev)} className="toggle-builder">
-            {showBuilder ? "Hide" : "Show"} Strategy Builder
+          <button onClick={() => navigate("/strategy-builder")} className="toggle-builder">
+            Open Strategy Builder
+          </button>
+
+          <button onClick={() => setShowHedge((prev) => !prev)} className="hedge-button">
+            {showHedge ? "Hide Hedge Assistant" : "Hedge My Position"}
           </button>
         </div>
 
@@ -123,88 +134,83 @@ const OptionsPage = () => {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <>
-            <table className="options-table">
-              <thead>
-                <tr>
-                  <th colSpan={5}>Calls</th>
-                  <th>Strike</th>
-                  <th colSpan={5}>Puts</th>
-                </tr>
-                <tr>
-                  <th>Bid</th>
-                  <th>Ask</th>
-                  <th>IV</th>
-                  <th>Vol</th>
-                  <th>OI</th>
-                  <th></th>
-                  <th>Bid</th>
-                  <th>Ask</th>
-                  <th>IV</th>
-                  <th>Vol</th>
-                  <th>OI</th>
-                </tr>
-              </thead>
-              <tbody>
-                {strikes.map((strike) => {
-                  const call = calls.find(c => c.strike === strike);
-                  const put = puts.find(p => p.strike === strike);
-                  return (
-                    <tr key={strike}>
-                      <td
-                        className={call ? getRowClass("call", strike) : ""}
-                        onClick={() =>
-                          call &&
-                          builderRef.current?.addLeg({
-                            action: "Buy",
-                            type: "Call",
-                            strike,
-                            expiry: selectedExpiry,
-                            qty: 1
-                          })
-                        }
-                      >
-                        {call?.bid ?? "-"}
-                      </td>
-                      <td className={call ? getRowClass("call", strike) : ""}>{call?.ask ?? "-"}</td>
-                      <td className={call ? getRowClass("call", strike) : ""}>{call?.iv?.toFixed(2) ?? "-"}</td>
-                      <td className={call ? getRowClass("call", strike) : ""}>{call?.volume ?? "-"}</td>
-                      <td className={call ? getRowClass("call", strike) : ""}>{call?.openInterest ?? "-"}</td>
-                      <td className="strike">{strike}</td>
-                      <td
-                        className={put ? getRowClass("put", strike) : ""}
-                        onClick={() =>
-                          put &&
-                          builderRef.current?.addLeg({
-                            action: "Buy",
-                            type: "Put",
-                            strike,
-                            expiry: selectedExpiry,
-                            qty: 1
-                          })
-                        }
-                      >
-                        {put?.bid ?? "-"}
-                      </td>
-                      <td className={put ? getRowClass("put", strike) : ""}>{put?.ask ?? "-"}</td>
-                      <td className={put ? getRowClass("put", strike) : ""}>{put?.iv?.toFixed(2) ?? "-"}</td>
-                      <td className={put ? getRowClass("put", strike) : ""}>{put?.volume ?? "-"}</td>
-                      <td className={put ? getRowClass("put", strike) : ""}>{put?.openInterest ?? "-"}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-
-            {/* 🔽 Hedge Assistant inserted below the table */}
-            {strikePrice && <HedgeAssistant symbol={symbol} price={strikePrice} />}
-          </>
+          <table className="options-table">
+            <thead>
+              <tr>
+                <th colSpan={5}>Calls</th>
+                <th>Strike</th>
+                <th colSpan={5}>Puts</th>
+              </tr>
+              <tr>
+                <th>Bid</th>
+                <th>Ask</th>
+                <th>IV</th>
+                <th>Vol</th>
+                <th>OI</th>
+                <th></th>
+                <th>Bid</th>
+                <th>Ask</th>
+                <th>IV</th>
+                <th>Vol</th>
+                <th>OI</th>
+              </tr>
+            </thead>
+            <tbody>
+              {strikes.map((strike) => {
+                const call = calls.find(c => c.strike === strike);
+                const put = puts.find(p => p.strike === strike);
+                return (
+                  <tr key={strike}>
+                    <td
+                      className={call ? getRowClass("call", strike) : ""}
+                      onClick={() =>
+                        call &&
+                        builderRef.current?.addLeg({
+                          action: "Buy",
+                          type: "Call",
+                          strike,
+                          expiry: selectedExpiry,
+                          qty: 1
+                        })
+                      }
+                    >
+                      {call?.bid ?? "-"}
+                    </td>
+                    <td className={call ? getRowClass("call", strike) : ""}>{call?.ask ?? "-"}</td>
+                    <td className={call ? getRowClass("call", strike) : ""}>{call?.iv?.toFixed(2) ?? "-"}</td>
+                    <td className={call ? getRowClass("call", strike) : ""}>{call?.volume ?? "-"}</td>
+                    <td className={call ? getRowClass("call", strike) : ""}>{call?.openInterest ?? "-"}</td>
+                    <td className="strike">{strike}</td>
+                    <td
+                      className={put ? getRowClass("put", strike) : ""}
+                      onClick={() =>
+                        put &&
+                        builderRef.current?.addLeg({
+                          action: "Buy",
+                          type: "Put",
+                          strike,
+                          expiry: selectedExpiry,
+                          qty: 1
+                        })
+                      }
+                    >
+                      {put?.bid ?? "-"}
+                    </td>
+                    <td className={put ? getRowClass("put", strike) : ""}>{put?.ask ?? "-"}</td>
+                    <td className={put ? getRowClass("put", strike) : ""}>{put?.iv?.toFixed(2) ?? "-"}</td>
+                    <td className={put ? getRowClass("put", strike) : ""}>{put?.volume ?? "-"}</td>
+                    <td className={put ? getRowClass("put", strike) : ""}>{put?.openInterest ?? "-"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         )}
       </div>
 
-      {showBuilder && (
-        <div className="strategy-panel-fixed">
-          <StrategyBuilder ref={builderRef} expiries={expiries} strikes={strikes} />
+      {showHedge && strikePrice && (
+        <div className="hedge-panel-fixed">
+          <HedgeAssistant symbol={symbol} price={strikePrice} />
         </div>
       )}
     </div>

@@ -13,6 +13,7 @@ import StrategyTestingPage from "./pages/StrategyTestingPage";
 import RiskAnalysisPage from "./pages/RiskAnalysisPage";
 import WatchlistPage from "./pages/WatchlistPage";
 import OptionsPage from "./pages/Options";
+import OptionStrategyPage from "./pages/OptionStratPage";
 
 const App = () => {
   return (
@@ -32,7 +33,8 @@ const App = () => {
           <Route path="/stock/:ticker/technical" element={<TechnicalAnalysisPage />} />
           <Route path="/stock/:ticker/risk" element={<RiskAnalysisPage />} />
           <Route path="/watchlist" element={<WatchlistPage />} />
-          <Route path="/options" element={<OptionsPage />} />v 
+          <Route path="/options" element={<OptionsPage />} />
+          <Route path="/strategy-builder" element={<OptionStrategyPage />} /> 
         </Routes>
     </Router>
   );

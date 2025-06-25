@@ -12,18 +12,19 @@ from backend.routes import metadata_search
 from backend.routes import ohlc_route
 from backend.routes import options
 from backend.routes import hedge
+from backend.routes import hedge_route
 
 # Internal imports
-from routes import sector_map, ohlc_data
-from routes import financial_analysis
-from routes import sentiment_analysis
-from routes import technical_analysis
-from routes import risk_analysis
-from routes import watchlist
-from routes import metadata_search
-from routes import ohlc_route
-from models import Base
-from db import engine
+from backend.routes import sector_map, ohlc_data
+from backend.routes import financial_analysis
+from backend.routes import sentiment_analysis
+from backend.routes import technical_analysis
+from backend.routes import risk_analysis
+from backend.routes import watchlist
+from backend.routes import metadata_search
+from backend.routes import ohlc_route
+from backend.models import Base
+from backend.db import engine
 
 # Initialize tables
 Base.metadata.create_all(bind=engine)
@@ -52,3 +53,4 @@ app.include_router(metadata_search.router)
 app.include_router(ohlc_route.router, prefix="/api")
 app.include_router(options.router, prefix="/api/options", tags=["Options"])
 app.include_router(hedge.router, prefix="/api")
+app.include_router(hedge_route.router, prefix="/api")
