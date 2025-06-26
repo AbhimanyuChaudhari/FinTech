@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ai-fund-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "./start.sh"
+    workingDir: backend  # or '.' if main.py is in the root
