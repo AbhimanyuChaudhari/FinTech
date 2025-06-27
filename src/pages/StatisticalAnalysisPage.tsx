@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+// src/pages/StatisticalAnalysisPage.tsx
+import { useParams, useNavigate } from "react-router-dom";
 
 const models = [
   {
@@ -21,43 +22,48 @@ const models = [
 
 export default function StatisticalAnalysisPage() {
   const { ticker } = useParams();
+  const navigate = useNavigate();
+
+  const handleModelClick = (model: string) => {
+    if (model === "AR") {
+      navigate(`/stock/${ticker}/statistical/ar`);
+    } else {
+      alert(`${model} not implemented yet.`);
+    }
+  };
 
   return (
-    <div style={{ display: "flex", backgroundColor: "#0f172a", color: "#f9fafb", minHeight: "100vh" }}>
+    <div className="flex min-h-screen bg-slate-900 text-slate-100">
       {/* Sidebar */}
-      <div style={{ width: "220px", padding: "2rem 1rem", borderRight: "1px solid #1e293b", backgroundColor: "#1e293b" }}>
-        <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem", color: "#60a5fa" }}>📊 Statistical Toolbox</h2>
-        <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-          {models.map((block) => (
-            <li key={block.category} style={{ fontWeight: 600, marginBottom: "0.5rem" }}>{block.category}</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Main content */}
-      <div style={{ flex: 1, padding: "2rem", overflowY: "auto" }}>
-        <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "1.5rem" }}>
-          Statistical Analysis for <span style={{ color: "#60a5fa" }}>{ticker}</span>
-        </h1>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
+      <aside className="w-56 bg-slate-800 border-r border-slate-700 p-6">
+        <h2 className="text-sky-400 text-lg font-semibold mb-4">📊 Statistical Toolbox</h2>
+        <ul className="space-y-2">
           {models.map(({ category, items }) => (
-            <div key={category} style={{ background: "#1e293b", padding: "1.25rem", borderRadius: "12px", border: "1px solid #334155" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "#93c5fd", marginBottom: "1rem" }}>{category}</h3>
-              <ul style={{ listStyle: "disc", paddingLeft: "1.25rem", color: "#f1f5f9" }}>
+            <li key={category}>
+              <h3 className="font-semibold text-slate-300 mb-1">{category}</h3>
+              <ul className="pl-4 list-disc space-y-1">
                 {items.map((model) => (
-                  <li key={model} style={{ marginBottom: "0.5rem", cursor: "pointer", transition: "color 0.2s" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#38bdf8")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "#f1f5f9")}
-                      onClick={() => alert(`${model} clicked`)}>
+                  <li
+                    key={model}
+                    className="cursor-pointer hover:text-sky-400 transition-colors"
+                    onClick={() => handleModelClick(model)}
+                  >
                     {model}
                   </li>
                 ))}
               </ul>
-            </div>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </aside>
+
+      {/* Main content */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        <h1 className="text-2xl font-bold mb-6">
+          Statistical Analysis for <span className="text-sky-400">{ticker}</span>
+        </h1>
+        <p className="text-slate-400">Select a model from the sidebar to begin forecasting.</p>
+      </main>
     </div>
   );
 }

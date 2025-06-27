@@ -5,7 +5,7 @@ from backend.db import get_db
 
 router = APIRouter(prefix="/api/search", tags=["Search"])
 
-@router.get("/")
+@router.get("/")  # ✅ trailing slash required
 def search_tickers(query: str = Query(..., min_length=1), db: Session = Depends(get_db)):
     results = db.query(TickerMetadata).filter(
         TickerMetadata.name.ilike(f"%{query}%") |
@@ -16,4 +16,4 @@ def search_tickers(query: str = Query(..., min_length=1), db: Session = Depends(
         "ticker": r.ticker,
         "name": r.name,
         "sector": r.sector
-    } for r in results]  
+    } for r in results]

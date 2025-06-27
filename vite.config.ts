@@ -1,6 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+// vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-})
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000", // your FastAPI server port
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  }
+});

@@ -1,9 +1,10 @@
-# backend/routes/options.py
 import yfinance as yf
 from fastapi import APIRouter
 import math
+import traceback
 
 router = APIRouter()
+
 
 def clean_float(val):
     try:
@@ -14,12 +15,21 @@ def clean_float(val):
     except:
         return None
 
+
+# ✅ Test route to confirm the router is working
+@router.get("/test")
+def test_options():
+    return {"msg": "options router working"}
+
+
+# ✅ Main options chain endpoint (symbol must be passed in the URL)
 @router.get("/{symbol}")
 async def get_options(symbol: str):
     try:
         ticker = yf.Ticker(symbol)
         current_price = ticker.info.get("regularMarketPrice", None)
         expiries = ticker.options
+
         if not expiries or current_price is None:
             return {"data": [], "price": current_price}
 
@@ -44,5 +54,7 @@ async def get_options(symbol: str):
             "data": results,
             "price": current_price
         }
+
     except Exception as e:
+        traceback.print_exc()
         return {"error": str(e)}

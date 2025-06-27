@@ -17,7 +17,8 @@ from backend.routes import (
     ohlc_route,
     options,
     hedge,
-    hedge_route
+    hedge_route,
+    autoregressive_m
 )
 
 # Initialize database tables
@@ -42,9 +43,10 @@ app.include_router(financial_analysis.router, prefix="/api")
 app.include_router(sentiment_analysis.router, prefix="/api")
 app.include_router(technical_analysis.router, prefix="/api")
 app.include_router(risk_analysis.router, prefix="/api")
-app.include_router(watchlist.router, prefix="/api")
+app.include_router(metadata_search.router)
 app.include_router(metadata_search.router, prefix="/api")
 app.include_router(ohlc_route.router, prefix="/api")
 app.include_router(options.router, prefix="/api/options", tags=["Options"])
 app.include_router(hedge.router, prefix="/api")
 app.include_router(hedge_route.router, prefix="/api")
+app.include_router(autoregressive_m.router, prefix="/api")
