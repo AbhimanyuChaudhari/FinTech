@@ -18,7 +18,13 @@ from backend.routes import (
     options,
     hedge,
     hedge_route,
-    autoregressive_m
+    autoregressive_m,
+    MovingAverage_m,
+    ARMA_m,
+    ARIMA_m,
+    SARIMA_m,
+    ARIMAX_m,
+    VAR_m
 )
 
 # Initialize database tables
@@ -50,3 +56,9 @@ app.include_router(options.router, prefix="/api/options", tags=["Options"])
 app.include_router(hedge.router, prefix="/api")
 app.include_router(hedge_route.router, prefix="/api")
 app.include_router(autoregressive_m.router, prefix="/api")
+app.include_router(MovingAverage_m.router, prefix="/api")
+app.include_router(ARMA_m.router, prefix="/api")
+app.include_router(ARIMA_m.router, prefix="/api")
+app.include_router(SARIMA_m.router, prefix="/api")
+app.include_router(ARIMAX_m.router, prefix="/api")
+app.include_router(VAR_m.router, prefix="/api")

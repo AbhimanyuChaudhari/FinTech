@@ -15,6 +15,12 @@ import WatchlistPage from "./pages/WatchlistPage";
 import OptionsPage from "./pages/Options";
 import OptionStrategyPage from "./pages/OptionStratPage";
 import ARModelForecastPage from "./pages/ArModelPage";
+import MAForecastPage from "./pages/MaModel";
+import ARMAForecastPage from "./pages/armaModel";
+import ARIMAForecastPage from "./pages/arimaModel";
+import SARIMAForecastPage from "./pages/sarimaModel";
+import ARIMAXForecastPage from "./pages/arimaxModel";
+import VARForecastPage from "./pages/varModel";
 
 const App = () => {
   return (
@@ -37,6 +43,12 @@ const App = () => {
           <Route path="/options" element={<OptionsPage />} />
           <Route path="/strategy-builder" element={<OptionStrategyPage />} /> 
           <Route path="/stock/:ticker/statistical/ar" element={<ARModelForecastPage />} />
+          <Route path="/stock/:ticker/statistical/ma" element={<MAForecastPage />} />
+          <Route path="/stock/:ticker/statistical/arma" element={<ARMAForecastPage />} />
+          <Route path="/stock/:ticker/statistical/arima" element={<ARIMAForecastPage />} />
+          <Route path="/stock/:ticker/statistical/sarima" element={<SARIMAForecastPage />} />
+          <Route path="/stock/:ticker/statistical/arimax" element={<ARIMAXForecastPage />} />
+          <Route path="/stock/:ticker/statistical/var" element={<VARForecastPage />} />
         </Routes>
     </Router>
   );
