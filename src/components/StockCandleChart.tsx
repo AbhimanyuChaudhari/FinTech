@@ -20,21 +20,29 @@ const StockCandleChart = ({
   const [categories, setCategories] = useState<string[]>([]);
   const [values, setValues] = useState<number[][]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!ticker) return;
     const loadData = async () => {
       setLoading(true);
+      setError(null);
       try {
         const res = await fetch(
           `${import.meta.env.VITE_API_URL}/api/ohlc?ticker=${ticker}&interval=${interval}`
-        );        
-        const raw: CandleData[] = await res.json();
+        );
+        const raw = await res.json();
+
+        if (!Array.isArray(raw)) {
+          console.error("Unexpected data format:", raw);
+          setError("Failed to load chart data. Please try again.");
+          return;
+        }
 
         const categoryData: string[] = [];
         const valueData: number[][] = [];
 
-        raw.forEach((d) => {
+        raw.forEach((d: CandleData) => {
           categoryData.push(d.Date);
           valueData.push([d.Open, d.Close, d.Low, d.High]);
         });
@@ -43,6 +51,7 @@ const StockCandleChart = ({
         setValues(valueData);
       } catch (err) {
         console.error("Error loading candle data", err);
+        setError("Error loading chart data.");
       } finally {
         setLoading(false);
       }
@@ -52,6 +61,7 @@ const StockCandleChart = ({
   }, [ticker, interval]);
 
   if (loading) return <div style={{ color: "#fff" }}>Loading chart...</div>;
+  if (error) return <div style={{ color: "#f87171" }}>{error}</div>;
 
   return (
     <ReactECharts
