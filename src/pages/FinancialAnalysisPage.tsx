@@ -21,7 +21,7 @@ export default function FinancialAnalysisPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/finance/${ticker}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/finance/${ticker}`);
         const result = await res.json();
         setData(result);
       } catch (err) {

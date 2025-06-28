@@ -38,7 +38,7 @@ export default function ARIMAForecastPage() {
     if (!ticker) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/statistical/arima", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/statistical/arima`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ticker, start, end, steps, max_p: maxP, max_q: maxQ, d })

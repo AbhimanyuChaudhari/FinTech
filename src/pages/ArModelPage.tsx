@@ -39,7 +39,7 @@ export default function ARForecastPage() {
     if (!ticker) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/statistical/ar", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/statistical/ar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ticker, start, end, steps, penalty_lambda: lambda, max_p: maxP })

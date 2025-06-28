@@ -16,7 +16,7 @@ export const useStockDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/sectors");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/sectors`);
         const data: SectorMap = await res.json();
         setSectorMap(data);
         setSelectedSector(Object.keys(data)[0] || "");

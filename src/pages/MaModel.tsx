@@ -35,7 +35,7 @@ export default function MAForecastPage() {
     if (!ticker) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/statistical/ma", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/statistical/ma`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ticker, start, end, steps, max_q: maxQ })

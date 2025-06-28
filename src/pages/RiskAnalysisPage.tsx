@@ -13,8 +13,8 @@ export default function RiskAnalysisPage() {
     if (!ticker) return;
     setLoading(true);
     fetch(
-      `http://localhost:8000/api/risk/${ticker}?risk_profile=${riskProfile}&capital=${capital}&timeframe=${timeframe}`
-    )
+      `${import.meta.env.VITE_API_URL}/api/risk/${ticker}?risk_profile=${riskProfile}&capital=${capital}&timeframe=${timeframe}`
+    )    
       .then((res) => res.json())
       .then((data) => {
         if (data.result) setResult(data.result);

@@ -36,7 +36,7 @@ export default function ARMAForecastPage() {
     if (!ticker) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/statistical/arma", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/statistical/arma`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ticker, start, end, steps, max_p: maxP, max_q: maxQ })

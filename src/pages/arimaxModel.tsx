@@ -45,7 +45,7 @@ export default function ARIMAXForecastPage() {
     if (!ticker) return;
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/statistical/arimax", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/statistical/arimax`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

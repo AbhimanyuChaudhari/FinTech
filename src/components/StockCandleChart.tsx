@@ -27,8 +27,8 @@ const StockCandleChart = ({
       setLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:8000/api/ohlc?ticker=${ticker}&interval=${interval}`
-        );
+          `${import.meta.env.VITE_API_URL}/api/ohlc?ticker=${ticker}&interval=${interval}`
+        );        
         const raw: CandleData[] = await res.json();
 
         const categoryData: string[] = [];
