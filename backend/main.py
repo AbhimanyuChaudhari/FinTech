@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
+
 print("CWD:", os.getcwd())
 print("FILES:", os.listdir())
 
@@ -36,16 +37,21 @@ Base.metadata.create_all(bind=engine)
 # Create FastAPI app
 app = FastAPI()
 
-# CORS middleware (allowing all origins — adjust for security in production)
+# CORS middleware — restrict to production + dev frontend
+origins = [
+    "https://fin-tech-nine.vercel.app",  # ✅ production frontend
+    "http://localhost:5173"              # ✅ local dev (Vite)
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For production, use: ["https://your-frontend-domain.com"]
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Register all routers with proper prefixes
+# Register all routers
 app.include_router(sector_map.router, prefix="/api")
 app.include_router(ohlc_data.router, prefix="/api")
 app.include_router(financial_analysis.router, prefix="/api")
