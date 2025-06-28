@@ -6,8 +6,12 @@ from backend.db import get_db
 
 router = APIRouter()
 
-@router.get("/api/ohlc/{ticker}")
-def get_ohlc_data(ticker: str, db: Session = Depends(get_db)):
+@router.get("/api/ohlc")
+def get_ohlc_data(ticker: str, interval: str = "1d", db: Session = Depends(get_db)):
+    # Only support daily OHLC for now, fallback for any interval
+    if interval != "1d":
+        return []
+
     rows = db.execute(text("""
         SELECT date, open, high, low, close
         FROM ohlc_daily
@@ -16,6 +20,6 @@ def get_ohlc_data(ticker: str, db: Session = Depends(get_db)):
     """), {"ticker": ticker}).fetchall()
 
     return [
-        {"time": row[0].isoformat(), "open": row[1], "high": row[2], "low": row[3], "close": row[4]}
+        {"Date": row[0].isoformat(), "Open": row[1], "High": row[2], "Low": row[3], "Close": row[4]}
         for row in rows
     ]
