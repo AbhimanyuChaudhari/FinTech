@@ -17,7 +17,7 @@ export default function SentimentAnalysisPage() {
 
     const fetchSentiment = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/sentiment/${ticker}`);
+        const res = await fetch(`https://fintech-backend-80wz.onrender.com/api/sentiment/${ticker}`);
         const data = await res.json();
         setArticles(data);
       } catch (err) {

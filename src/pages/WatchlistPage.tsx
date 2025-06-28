@@ -7,15 +7,17 @@ export default function WatchlistPage() {
   const [suggestions, setSuggestions] = useState<{ ticker: string, name: string, sector: string }[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
+  const API_BASE = "https://fintech-backend-80wz.onrender.com";
+
   const fetchWatchlist = () => {
-    fetch(`http://localhost:8000/api/watchlist/${userId}`)
+    fetch(`${API_BASE}/api/watchlist/${userId}`)
       .then(res => res.json())
       .then(data => setTickers(data.map((item: any) => item.ticker)));
   };
 
   const addTicker = () => {
     if (!newTicker.trim()) return;
-    fetch(`http://localhost:8000/api/watchlist/${userId}?ticker=${newTicker}`, { method: "POST" })
+    fetch(`${API_BASE}/api/watchlist/${userId}?ticker=${newTicker}`, { method: "POST" })
       .then(() => {
         setNewTicker("");
         setSuggestions([]);
@@ -25,7 +27,7 @@ export default function WatchlistPage() {
   };
 
   const removeTicker = (ticker: string) => {
-    fetch(`http://localhost:8000/api/watchlist/${userId}/${ticker}`, { method: "DELETE" })
+    fetch(`${API_BASE}/api/watchlist/${userId}/${ticker}`, { method: "DELETE" })
       .then(() => fetchWatchlist());
   };
 
@@ -36,7 +38,7 @@ export default function WatchlistPage() {
       return;
     }
 
-    fetch(`http://localhost:8000/api/search?query=${query}`)
+    fetch(`${API_BASE}/api/search?query=${query}`)
       .then(res => res.json())
       .then(data => {
         setSuggestions(data);

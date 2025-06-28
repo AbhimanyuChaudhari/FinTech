@@ -38,7 +38,7 @@ export default function VARForecastPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/statistical/var", {
+      const res = await fetch("https://fintech-backend-80wz.onrender.com/api/statistical/var", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

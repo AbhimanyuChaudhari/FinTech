@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 export const usePrice = (ticker: string, initialPrice: number | null = null) => {
   const [price, setPrice] = useState<number | null>(initialPrice);
 
   useEffect(() => {
     const fetchPrice = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/price/${ticker}`);
+        const res = await fetch(`${BASE_URL}/api/price/${ticker}`);
         const data = await res.json();
         if (data.close) {
           setPrice(data.close);
@@ -17,7 +19,7 @@ export const usePrice = (ticker: string, initialPrice: number | null = null) => 
     };
 
     fetchPrice();
-    const interval = setInterval(fetchPrice, 10000);
+    const interval = setInterval(fetchPrice, 10000); // refresh every 10s
 
     return () => clearInterval(interval);
   }, [ticker]);

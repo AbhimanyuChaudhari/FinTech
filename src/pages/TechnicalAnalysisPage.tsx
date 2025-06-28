@@ -11,7 +11,7 @@ export default function TechnicalAnalysisPage() {
   useEffect(() => {
     if (!ticker) return;
     setLoading(true);
-    fetch(`http://localhost:8000/api/technical/${ticker}`)
+    fetch(`https://fintech-backend-80wz.onrender.com/api/technical/${ticker}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) setResult(data.result);
