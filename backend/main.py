@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
+print("CWD:", os.getcwd())
+print("FILES:", os.listdir())
 
 from backend.db import engine
 from backend.models import Base
