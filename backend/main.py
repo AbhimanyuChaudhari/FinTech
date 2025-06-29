@@ -28,7 +28,7 @@ from backend.routes import (
     ARIMA_m,
     SARIMA_m,
     ARIMAX_m,
-    VAR_m
+    VAR_m,
 )
 
 # Initialize database tables
@@ -37,29 +37,28 @@ Base.metadata.create_all(bind=engine)
 # Create FastAPI app
 app = FastAPI()
 
-# CORS middleware — restrict to production + dev frontend
+# CORS middleware
 origins = [
     "https://fin-tech-nine.vercel.app",  # ✅ production frontend
-    "http://localhost:5173"              # ✅ local dev (Vite)
+    "http://localhost:5173",             # ✅ local dev
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,               # ← whitelist these origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Register all routers
+# Register routers with appropriate prefixes
 app.include_router(sector_map.router, prefix="/api")
 app.include_router(ohlc_data.router, prefix="/api")
 app.include_router(financial_analysis.router, prefix="/api")
 app.include_router(sentiment_analysis.router, prefix="/api")
 app.include_router(technical_analysis.router, prefix="/api")
 app.include_router(risk_analysis.router, prefix="/api")
-app.include_router(metadata_search.router)
-app.include_router(metadata_search.router, prefix="/api")
+app.include_router(metadata_search.router, prefix="/api")   # 👈 remove duplicate
 app.include_router(ohlc_route.router, prefix="/api")
 app.include_router(options.router, prefix="/api/options", tags=["Options"])
 app.include_router(hedge.router, prefix="/api")
