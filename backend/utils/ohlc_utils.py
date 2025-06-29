@@ -1,4 +1,4 @@
-def fetch_ohlc_alphavantage(ticker: str, interval: str = "15min", function: str = "TIME_SERIES_INTRADAY", apikey: str = "YOUR_API_KEY"):
+def fetch_ohlc_alphavantage(ticker: str, interval: str = "15min", function: str = "TIME_SERIES_INTRADAY", apikey: str = "PE6B3MEJUZYOVPE5"):
     import requests
     import pandas as pd
 
@@ -17,7 +17,11 @@ def fetch_ohlc_alphavantage(ticker: str, interval: str = "15min", function: str 
     response = requests.get(base_url, params=params)
     data = response.json()
 
-    # Determine correct key
+    # Handle Alpha Vantage errors
+    if "Error Message" in data or "Note" in data:
+        raise ValueError(f"Alpha Vantage API error: {data.get('Error Message') or data.get('Note')}")
+
+    # Determine correct key in response
     if function == "TIME_SERIES_INTRADAY":
         key = f"Time Series ({interval})"
     elif function == "TIME_SERIES_DAILY":
@@ -30,9 +34,11 @@ def fetch_ohlc_alphavantage(ticker: str, interval: str = "15min", function: str 
         raise ValueError("Unsupported Alpha Vantage function.")
 
     if key not in data:
-        raise ValueError(f"Unexpected response: {data}")
+        raise ValueError(f"Unexpected response format. Expected key '{key}', got: {data.keys()}")
 
+    # Parse data
     df = pd.DataFrame.from_dict(data[key], orient="index")
+    df.columns = df.columns.str.strip()  # Remove extra spaces from column names
     df = df.rename(columns={
         "1. open": "Open",
         "2. high": "High",
